@@ -115,78 +115,25 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // --- Custom Cursor ---
+    // --- Custom Cursor (Optional) ---
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorOutline = document.querySelector('.cursor-outline');
 
-    if (cursorDot && cursorOutline && window.matchMedia("(pointer: fine)").matches) {
-        let mouseX = 0, mouseY = 0;
-        let outlineX = 0, outlineY = 0;
-        
+    if (window.matchMedia("(pointer: fine)").matches) {
         window.addEventListener("mousemove", function (e) {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // cursorDot.style.left = `${posX}px`;
+            // cursorDot.style.top = `${posY}px`;
+
+            // cursorOutline.style.left = `${posX}px`;
+            // cursorOutline.style.top = `${posY}px`;
             
-            cursorDot.style.left = `${mouseX}px`;
-            cursorDot.style.top = `${mouseY}px`;
-        });
-        
-        // Smooth follow for outline
-        function animateOutline() {
-            outlineX += (mouseX - outlineX) * 0.15;
-            outlineY += (mouseY - outlineY) * 0.15;
-            
-            cursorOutline.style.left = `${outlineX}px`;
-            cursorOutline.style.top = `${outlineY}px`;
-            
-            requestAnimationFrame(animateOutline);
-        }
-        animateOutline();
-        
-        // Add hover effects
-        const hoverElements = document.querySelectorAll('a, button, .project-card, .feature-card');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                cursorOutline.style.width = '60px';
-                cursorOutline.style.height = '60px';
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursorOutline.style.width = '40px';
-                cursorOutline.style.height = '40px';
-            });
+            // cursorOutline.animate({
+            //     left: `${posX}px`,
+            //     top: `${posY}px`
+            // }, { duration: 500, fill: "forwards" });
         });
     }
-    
-    // --- Smooth Scroll for Navigation ---
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    // --- Header Scroll Effect ---
-    const header = document.querySelector('.header');
-    let lastScroll = 0;
-    
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll > 100) {
-            header.style.boxShadow = 'var(--shadow-md)';
-        } else {
-            header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.1)';
-        }
-        
-        lastScroll = currentScroll;
-    });
 });
